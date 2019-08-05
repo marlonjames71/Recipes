@@ -23,6 +23,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		updateViews()
+		title = "Instructions"
     }
 
 	func updateViews() {

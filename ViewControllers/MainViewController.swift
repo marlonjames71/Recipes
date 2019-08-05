@@ -10,10 +10,12 @@ import UIKit
 
 class MainViewController: UIViewController {
 
+	// MARK: - Properties & Outlets
+
 	let networkClient = RecipesNetworkClient()
 	var allRecipes: [Recipe] = []
 	var recipesTableViewController: RecipesTableViewController?
-	let searchController = UISearchController()
+
 	var searchResults: [Recipe] = [] {
 		didSet {
 			recipesTableViewController?.recipes = searchResults
@@ -21,6 +23,9 @@ class MainViewController: UIViewController {
 	}
 
 	@IBOutlet weak var searchBar: UISearchBar!
+
+
+	// MARK: - Lifecycle
 
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,11 +51,14 @@ class MainViewController: UIViewController {
 		}
     }
 
+	
+	// MARK: - Search Function
+
 	func filteredContentForSearchText(searchText: String) {
 		if searchText != "" {
 			searchResults = allRecipes.filter { $0.name.lowercased().contains(searchText.lowercased()) }
 		} else {
-
+			searchResults = allRecipes
 		}
 	}
 }
