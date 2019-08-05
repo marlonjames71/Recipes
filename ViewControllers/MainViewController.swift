@@ -13,39 +13,52 @@ class MainViewController: UIViewController {
 	let networkClient = RecipesNetworkClient()
 	var allRecipes: [Recipe] = []
 	var recipesTableViewController: RecipesTableViewController?
-	var filteredRecipes: [Recipe] = []
+	let searchController = UISearchController()
+	var searchResults: [Recipe] = [] {
+		didSet {
+			recipesTableViewController?.recipes = searchResults
+		}
+	}
 
 	@IBOutlet weak var searchBar: UISearchBar!
 
 	override func viewDidLoad() {
         super.viewDidLoad()
-
-		networkClient.fetchRecipes { (receipes, error) in
+		networkClient.fetchRecipes { (recipes, error) in
 			if let error = error {
 				NSLog("Error fetching recipes: \(error)")
 				return
-			}
-			DispatchQueue.main.async {
-				guard let recipes = receipes else { return }
+			} else {
+				guard let recipes = recipes else { return }
 				self.allRecipes = recipes
+				self.recipesTableViewController?.recipes = self.allRecipes
 			}
 		}
     }
-    
+
 
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "TableViewEmbedSegue" {
 			recipesTableViewController = segue.destination as? RecipesTableViewController
+
 		}
     }
 
-//	private func filteredRecipes() {
-//
-//	}
+	func filteredContentForSearchText(searchText: String) {
+		if searchText != "" {
+			searchResults = allRecipes.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+		} else {
+
+		}
+	}
 }
 
 extension MainViewController: UISearchBarDelegate {
 
+	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+		guard let searchInput = searchBar.text else { return }
+		filteredContentForSearchText(searchText: searchInput)
+	}
 }
