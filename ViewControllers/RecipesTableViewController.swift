@@ -21,7 +21,7 @@ class RecipesTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-		
+		self.tableView.tableFooterView = UIView()
     }
 
     // MARK: - Table view data source

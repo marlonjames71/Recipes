@@ -29,6 +29,7 @@ class MainViewController: UIViewController {
 
 	override func viewDidLoad() {
         super.viewDidLoad()
+		setUI()
 		networkClient.fetchRecipes { (recipes, error) in
 			if let error = error {
 				NSLog("Error fetching recipes: \(error)")
@@ -60,6 +61,12 @@ class MainViewController: UIViewController {
 		} else {
 			searchResults = allRecipes
 		}
+	}
+
+	func setUI() {
+		navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.05882352963, green: 0.180392161, blue: 0.2470588237, alpha: 1)
+		navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+		navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
 	}
 }
 
